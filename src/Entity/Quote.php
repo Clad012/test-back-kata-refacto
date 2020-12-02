@@ -25,6 +25,7 @@ class Quote
         return (string) $quote->id;
     }
 
+    //Getters
     public function getDestinationURL(){
         $siteRepository = new SiteRepository();
         $site = $siteRepository->getById(
