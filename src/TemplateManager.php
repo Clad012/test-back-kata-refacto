@@ -50,6 +50,25 @@ class TemplateManager
         }
         return false;
     }
+
+    private function handleMatches($text, array $data, array $matches){
+
+        //foreach match we'll find in match[1] the classname and in match[2] the function name
+        //Example: [quote:summary_html] match[1] : quote | match[2]: summary_html
+        foreach ($matches as $match) {
+            $replacementText = $this->getReplacementText($match[1], $match[2], $data);
+            if ($replacementText) {
+                $text = str_replace(
+                    '[' . $match[1] . ':' . $match[2] .']',
+                    $replacementText,
+                    $text
+                );
+            }
+        }
+        return $text;
+    }
+
+
     private function computeText($text, array $data)
     {
         $APPLICATION_CONTEXT = ApplicationContext::getInstance();
