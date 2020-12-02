@@ -31,7 +31,25 @@ class TemplateManager
             'user' => $user
         ];
     }
-
+    private function getReplacementText($className, $functionName, $data)
+    {
+        $context = $this->getCurrentContext($data);
+        $contextObject = null;
+        // We check if the class exist in the context array of objects and not null
+        if (array_key_exists($className, $context) and $context[$className]) {
+            $contextObject = $context[$className];
+        } else {
+            return false;
+        }
+         // is_callable test if the (functionName) can be called inside the contextObject object
+        if (is_callable(array($contextObject, $functionName), false, $callable_name)) {
+            return $contextObject->$functionName();
+        } else {
+            dd($functionName." Can't be called");
+            return false;
+        }
+        return false;
+    }
     private function computeText($text, array $data)
     {
         $APPLICATION_CONTEXT = ApplicationContext::getInstance();
