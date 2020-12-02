@@ -73,7 +73,7 @@ class TemplateManager
 
     private function computeText($text, array $data)
     {
-        $matches = $this->getMatches($text, $data) //get all the matches of the type: [classeName:functionName];
-        return $this->handleMatches($text, $data, $matches) // return the text with the right matches replalced with the adequate valute;
+        $matches = $this->getMatches($text, $data); //get all the matches of the type: [classeName:functionName];
+        return $this->handleMatches($text, $data, $matches); // return the text with the right matches replalced with the adequate valute;
     }
 }
