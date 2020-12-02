@@ -14,6 +14,14 @@ class TemplateManager
 
         return $replaced;
     }
+
+
+    private function computeText($text, array $data)
+    {
+        $matches = $this->getMatches($text, $data); //get all the matches of the type: [classeName:functionName];
+        return $this->handleMatches($text, $data, $matches); // return the text with the right matches replalced with the adequate valute;
+    }
+
     private function getMatches($text, array $data){
 
         $matches_found = [];
@@ -22,14 +30,22 @@ class TemplateManager
         return $matches_found;
 
     }    
-    private function getCurrentContext($data){
-        $APPLICATION_CONTEXT = ApplicationContext::getInstance();
-        $quote = (array_key_exists('quote', $data) and $data['quote'] instanceof Quote) ? $data['quote'] : false;
-        $user  = (array_key_exists('user', $data)  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
-        return [
-            'quote' => $quote,
-            'user' => $user
-        ];
+
+    private function handleMatches($text, array $data, array $matches){
+
+        //foreach match we'll find in match[1] the classname and in match[2] the function name
+        //Example: [quote:summary_html] match[1] : quote | match[2]: summary_html
+        foreach ($matches as $match) {
+            $replacementText = $this->getReplacementText($match[1], $match[2], $data);
+            if ($replacementText) {
+                $text = str_replace(
+                    '['.$match[1] .':'.$match[2].']',
+                    $replacementText,
+                    $text
+                );
+            }
+        }
+        return $text;
     }
 
     //getReplacementText try to execute the functionName in className and return the data
@@ -53,27 +69,13 @@ class TemplateManager
         return false;
     }
 
-    private function handleMatches($text, array $data, array $matches){
-
-        //foreach match we'll find in match[1] the classname and in match[2] the function name
-        //Example: [quote:summary_html] match[1] : quote | match[2]: summary_html
-        foreach ($matches as $match) {
-            $replacementText = $this->getReplacementText($match[1], $match[2], $data);
-            if ($replacementText) {
-                $text = str_replace(
-                    '[' . $match[1] . ':' . $match[2] .']',
-                    $replacementText,
-                    $text
-                );
-            }
-        }
-        return $text;
-    }
-
-
-    private function computeText($text, array $data)
-    {
-        $matches = $this->getMatches($text, $data); //get all the matches of the type: [classeName:functionName];
-        return $this->handleMatches($text, $data, $matches); // return the text with the right matches replalced with the adequate valute;
+    private function getCurrentContext($data){
+        $APPLICATION_CONTEXT = ApplicationContext::getInstance();
+        $quote = (array_key_exists('quote', $data) and $data['quote'] instanceof Quote) ? $data['quote'] : false;
+        $user  = (array_key_exists('user', $data)  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
+        return [
+            'quote' => $quote,
+            'user' => $user
+        ];
     }
 }
