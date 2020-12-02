@@ -23,12 +23,10 @@ class TemplateManager
     }
 
     private function getMatches($text, array $data){
-
         $matches_found = [];
         // Finding all type of injection format: [className:functionName]
         preg_match_all('/\[(\w*):(\w*)\]/', $text, $matches_found, PREG_SET_ORDER);
         return $matches_found;
-
     }    
 
     private function handleMatches($text, array $data, array $matches){
