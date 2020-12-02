@@ -22,6 +22,15 @@ class TemplateManager
         return $matches_found;
 
     }    
+    private function getCurrentContext($data){
+        $APPLICATION_CONTEXT = ApplicationContext::getInstance();
+        $quote = (array_key_exists('quote', $data) and $data['quote'] instanceof Quote) ? $data['quote'] : false;
+        $user  = (array_key_exists('user', $data)  and ($data['user']  instanceof User))  ? $data['user']  : $APPLICATION_CONTEXT->getCurrentUser();
+        return [
+            'quote' => $quote,
+            'user' => $user
+        ];
+    }
 
     private function computeText($text, array $data)
     {
