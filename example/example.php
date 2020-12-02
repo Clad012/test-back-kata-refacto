@@ -16,7 +16,14 @@ require_once __DIR__ . '/../src/Repository/SiteRepository.php';
 require_once __DIR__ . '/../src/TemplateManager.php';
 
 $faker = \Faker\Factory::create();
+// Note: new injections are:
+// quote:getSummary
+// quote:getSummaryHtml
+// quote:getDestinationName
+// quote:getDestinationURL
 
+// user:getFirstname
+// user:getLastname
 $template = new Template(
     1,
     'Votre voyage avec une agence locale [quote:destination_name]',
