@@ -24,7 +24,6 @@ $faker = \Faker\Factory::create();
 
 // user:getFirstname
 // user:getLastname
-
 $template = new Template(
     1,
     'Votre voyage avec une agence locale [quote:getDestinationName]',
