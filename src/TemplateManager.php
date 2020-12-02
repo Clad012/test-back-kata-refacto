@@ -32,7 +32,6 @@ class TemplateManager
     }    
 
     private function handleMatches($text, array $data, array $matches){
-
         //foreach match we'll find in match[1] the classname and in match[2] the function name
         //Example: [quote:summary_html] match[1] : quote | match[2]: summary_html
         foreach ($matches as $match) {
